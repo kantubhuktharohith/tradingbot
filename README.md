@@ -1,189 +1,268 @@
-# 📈 Indian Stock Market Trading Bot
+# Indian Stock Market Trading Signal Bot
 
-A Python-based automated trading signal bot for **Indian stocks (NSE)** that monitors your watchlist and sends real-time **BUY / SELL alerts via Telegram** using a multi-indicator technical analysis strategy.
+An automated trading signal bot for Indian stock markets (NSE) that monitors selected stocks, analyzes technical indicators in real time, and delivers BUY and SELL alerts directly to Telegram.
 
-> ⚠️ **Disclaimer:** This bot is for **educational and paper trading purposes only**. It does not execute real trades. Always do your own research before investing.
+The system is designed for educational purposes, strategy testing, and paper trading. It does not place live trades or interact with brokerage accounts.
+
+## Key Features
+
+### Real-Time Market Monitoring
+
+Continuously tracks NSE-listed stocks from a configurable watchlist and evaluates market conditions using multiple technical indicators.
+
+### Multi-Indicator Trading Strategy
+
+Generates trading signals by combining:
+
+* Simple Moving Averages (SMA 20 / SMA 50)
+* Relative Strength Index (RSI)
+* Moving Average Convergence Divergence (MACD)
+* Volume Analysis
+
+### Telegram Notifications
+
+Receive instant alerts with:
+
+* Signal type (BUY / SELL)
+* Current market price
+* Indicator values
+* Volume confirmation
+* Direct chart links
+
+### Nifty 50 Market Scanner
+
+Analyze Nifty 50 constituents to identify:
+
+* Top gainers
+* Top losers
+* High-volume movers
+* Potential trading opportunities
+
+### Dynamic Watchlist Management
+
+Manage monitored stocks directly through Telegram commands without restarting the application.
+
+### Paper Trading Analytics
+
+Track generated signals and maintain performance statistics, including:
+
+* Trade history
+* Win/Loss ratio
+* Profit & Loss estimates
+* Strategy performance metrics
+
+### Flexible Timeframes
+
+Support for multiple analysis intervals:
+
+* 1 Minute
+* 5 Minutes
+* 15 Minutes
+* 30 Minutes
+* 1 Hour
+* 1 Day
+
+### Alert Control
+
+Pause and resume notifications using Snooze Mode while keeping the bot operational.
+
+### Cloud Deployment Ready
+
+Includes deployment configuration for Heroku and can be adapted for other cloud platforms.
 
 ---
 
-## 🚀 Features
+## Technology Stack
 
-- 📊 **Multi-Indicator Strategy** — Combines SMA, RSI, MACD, and Volume for high-confidence signals
-- 📱 **Telegram Integration** — Receive instant BUY/SELL alerts with live chart links on your phone
-- 🔍 **Nifty 50 Screener** — Scan all 50 Nifty stocks for top gainers, losers & high volume movers
-- 📋 **Dynamic Watchlist** — Add/remove stocks on the fly via Telegram commands
-- 📉 **Paper Trade Tracker** — Auto-records every signal and tracks P&L statistics
-- ⏱️ **Flexible Timeframes** — Switch between 1m, 5m, 15m, 30m, 1h, and 1d intervals
-- 🔕 **Snooze Mode** — Temporarily pause alerts without stopping the bot
-- ☁️ **Deployable to Heroku** — Ships with a `Procfile` for cloud deployment
-
----
-
-## 🛠️ Tech Stack
-
-| Tool | Purpose |
-|------|---------|
-| `yfinance` | Fetch real-time & historical stock data from Yahoo Finance |
-| `pandas` | Technical indicator calculations |
-| `requests` | Telegram Bot API communication |
-| Python 3.x | Core language |
+| Technology       | Purpose                                  |
+| ---------------- | ---------------------------------------- |
+| Python 3.x       | Core Application                         |
+| pandas           | Data Processing & Indicator Calculations |
+| yfinance         | Market Data Retrieval                    |
+| requests         | Telegram API Integration                 |
+| Telegram Bot API | Alert Delivery                           |
 
 ---
 
-## 📁 Project Structure
+## Project Architecture
 
-```
+```text
 trading/
-├── bot.py             # Main loop: market checks, Telegram command routing
-├── strategy.py        # Technical analysis engine (SMA, RSI, MACD, Volume)
-├── screener.py        # Nifty 50 scanner for gainers, losers & high volume
-├── telegram_bot.py    # Telegram API helpers (send alerts, menu, polling)
-├── trades.py          # Paper trade recording and P&L statistics
-├── config.py          # Settings, watchlist loader, environment variables
-├── watchlist.txt      # Your monitored stocks (one ticker per line)
-├── nifty50.txt        # Nifty 50 ticker list for screener
-├── trades.json        # Auto-generated paper trade history
+├── bot.py             # Application entry point
+├── strategy.py        # Signal generation engine
+├── screener.py        # Nifty 50 market scanner
+├── telegram_bot.py    # Telegram integration layer
+├── trades.py          # Paper trading and analytics
+├── config.py          # Configuration management
+├── watchlist.txt      # User watchlist
+├── nifty50.txt        # Nifty 50 symbols
+├── trades.json        # Trade history storage
 ├── requirements.txt   # Python dependencies
-├── Procfile           # Heroku worker process definition
-└── .env               # 🔒 Secret keys (NOT committed to Git)
+├── Procfile           # Deployment configuration
+└── .env               # Environment variables
 ```
 
 ---
 
-## ⚙️ Setup & Installation
+## Installation
 
-### 1. Clone the Repository
+### Clone Repository
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/trading-bot.git
 cd trading-bot
 ```
 
-### 2. Install Dependencies
+### Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Create a Telegram Bot
-1. Open Telegram and chat with [@BotFather](https://t.me/BotFather)
-2. Send `/newbot` and follow the prompts
-3. Copy your **Bot Token**
-4. Get your **Chat ID** from [@userinfobot](https://t.me/userinfobot)
+### Configure Telegram Bot
 
-### 4. Configure Environment Variables
-Create a `.env` file in the project root:
+1. Create a bot using @BotFather.
+2. Obtain the bot token.
+3. Retrieve your Telegram Chat ID.
+4. Create a `.env` file:
+
 ```env
-TELEGRAM_TOKEN=your_bot_token_here
-TELEGRAM_CHAT_ID=your_chat_id_here
+TELEGRAM_TOKEN=your_bot_token
+TELEGRAM_CHAT_ID=your_chat_id
 ```
 
-### 5. Set Up Your Watchlist
-Edit `watchlist.txt` and add NSE stock tickers (one per line):
-```
+### Configure Watchlist
+
+Add NSE symbols to `watchlist.txt`:
+
+```text
 RELIANCE.NS
 TCS.NS
 INFY.NS
 HDFCBANK.NS
 ```
 
-### 6. Run the Bot
+### Start the Bot
+
 ```bash
 python bot.py
 ```
 
 ---
 
-## 📲 Telegram Commands
+## Telegram Commands
 
-| Command | Description |
-|---------|-------------|
-| `/start` or `/menu` | Show the interactive button menu |
-| `/add SYMBOL` | Add a stock to watchlist (e.g. `/add TCS.NS`) |
-| `/remove SYMBOL` | Remove a stock from watchlist |
-| `/list` | View current watchlist |
-| `/check` | Force an immediate market check |
-| `/stats` | View paper trading P&L statistics |
-| `/scan` | Run Nifty 50 screener |
-| `/timeframe 5m` | Change analysis timeframe (`1m` `5m` `15m` `30m` `1h` `1d`) |
-| `/snooze 30` | Snooze alerts for N minutes |
-| `/resume` | Resume alerts after snooze |
-| `/help` | Show all available commands |
-
----
-
-## 🧠 Trading Strategy
-
-The bot uses a **score-based multi-indicator system**. Each indicator votes, and the final signal is determined by the total score:
-
-| Indicator | BUY Condition | SELL Condition |
-|-----------|--------------|----------------|
-| **SMA 20/50** | SMA20 > SMA50 (bullish crossover) | SMA20 < SMA50 (bearish crossover) |
-| **RSI (14)** | RSI < 70 (not overbought) | RSI > 30 (not oversold) |
-| **MACD** | MACD Line > Signal Line | MACD Line < Signal Line |
-| **Volume** | Volume ≥ 1.2× 20-day average | Volume ≥ 1.2× 20-day average |
-
-**Signal Rules:**
-- ✅ **STRONG BUY** → 3 or 4 buy conditions met
-- 🟢 **BUY** → 2 buy conditions met + SMA bullish
-- 🔴 **STRONG SELL** → 3 or 4 sell conditions met
-- ❌ **SELL** → 2 sell conditions met + SMA bearish
-- ⏸️ **HOLD** → No clear signal
+| Command          | Function                         |
+| ---------------- | -------------------------------- |
+| `/start`         | Initialize bot interface         |
+| `/menu`          | Display command menu             |
+| `/add SYMBOL`    | Add stock to watchlist           |
+| `/remove SYMBOL` | Remove stock from watchlist      |
+| `/list`          | Show active watchlist            |
+| `/check`         | Trigger immediate market scan    |
+| `/scan`          | Run Nifty 50 screener            |
+| `/stats`         | Display paper trading statistics |
+| `/timeframe`     | Change analysis timeframe        |
+| `/snooze`        | Pause notifications              |
+| `/resume`        | Resume notifications             |
+| `/help`          | Show help information            |
 
 ---
 
-## ☁️ Deploy to Heroku
+## Trading Logic
+
+The strategy uses a weighted confirmation model where multiple indicators contribute to the final signal.
+
+| Indicator | Bullish Signal            | Bearish Signal          |
+| --------- | ------------------------- | ----------------------- |
+| SMA 20/50 | SMA20 > SMA50             | SMA20 < SMA50           |
+| RSI (14)  | RSI below overbought zone | RSI above oversold zone |
+| MACD      | MACD above signal line    | MACD below signal line  |
+| Volume    | Above average volume      | Above average volume    |
+
+### Signal Classification
+
+| Signal      | Conditions                                          |
+| ----------- | --------------------------------------------------- |
+| STRONG BUY  | 3–4 bullish confirmations                           |
+| BUY         | Minimum 2 confirmations including SMA trend         |
+| HOLD        | No clear directional bias                           |
+| SELL        | Minimum 2 bearish confirmations including SMA trend |
+| STRONG SELL | 3–4 bearish confirmations                           |
+
+---
+
+## Example Alert
+
+```text
+📈 STRONG BUY | TCS.NS
+
+Price: ₹3842.50
+RSI: 58.3
+MACD Histogram: 0.0214
+Volume: 1.8x Average
+
+Time: 10:35 AM
+```
+
+---
+
+## Deployment
+
+### Heroku
 
 ```bash
 heroku create your-app-name
+
 heroku config:set TELEGRAM_TOKEN=your_token
 heroku config:set TELEGRAM_CHAT_ID=your_chat_id
+
 git push heroku main
+
 heroku ps:scale worker=1
 ```
 
-The `Procfile` is already configured to run the bot as a background worker.
+The included Procfile runs the application as a background worker process.
 
 ---
 
-## 📊 Example Alert
+## Security Best Practices
 
-```
-📈 STRONG BUY - TCS.NS
-
-Price: Rs.3842.50
-RSI: 58.3
-MACD Histogram: 0.0214
-Volume: 1.8x avg
-Time: 10:35:00
-
-🔗 View Chart
-```
+* Never commit `.env` files.
+* Store credentials using environment variables.
+* Rotate Telegram tokens immediately if compromised.
+* Restrict repository access when testing proprietary strategies.
 
 ---
 
-## 🔒 Security Notes
+## Disclaimer
 
-- Never commit your `.env` file — it's already in `.gitignore`
-- Rotate your Telegram bot token immediately if exposed
-- This bot only **reads** market data; it cannot place real orders
+This project is intended solely for educational, research, and paper-trading purposes.
+
+The software does not provide financial advice and should not be considered a recommendation to buy or sell securities. Trading and investing involve significant financial risk. Users are responsible for conducting their own research and making independent investment decisions.
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
-Pull requests are welcome! For major changes, please open an issue first to discuss what you'd like to change.
+Contributions are welcome.
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
+2. Create a feature branch
+3. Commit changes
+4. Push to your fork
 5. Open a Pull Request
 
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
+Please open an issue before submitting major feature requests or architectural changes.
 
 ---
 
-<p align="center">Made with ❤️ for Indian stock market traders</p>
+## License
+
+Distributed under the MIT License. See the LICENSE file for details.
+
+---
+
+<p align="center">
+Built for algorithmic trading enthusiasts and developers exploring Indian equity markets.
+</p>
